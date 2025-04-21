@@ -28,11 +28,12 @@ jobs:
       - name: Build Angular app (mycv)
         run: ng build mycv --configuration production
 
-      - name: Copy built files to docs/
+      - name: Copy built files to docs
         run: |
           rm -rf docs
           mkdir docs
           cp -r dist/mycv/browser/* docs/
+          cp dist/mycv/browser/index.html docs/index.html
 
       - name: Commit and push docs
         run: |
