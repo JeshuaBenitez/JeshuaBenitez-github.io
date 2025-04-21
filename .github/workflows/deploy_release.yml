@@ -33,7 +33,7 @@ jobs:
           rm -rf docs
           mkdir docs
           cp -r dist/mycv/browser/* docs/
-          cp dist/mycv/browser/index.html docs/index.html
+          cp mycv/docs/browser/index.html docs/index.html
 
       - name: Commit and push docs
         run: |
