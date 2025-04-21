@@ -1,0 +1,40 @@
+name: CI/CD deploy mycv to docs
+
+on:
+  push:
+    branches: [ "release" ]
+  pull_request:
+    branches: [ "release" ]
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular app (mycv)
+        run: npm run build --configuration production
+
+      - name: Copy built files to docs
+        run: |
+          rm -rf docs
+          mkdir docs
+          cp -r dist/mycv/browser/* docs/
+
+      - name: Commit and push to docs
+        run: |
+          git config --global user.name "CI Bot"
+          git config --global user.email "ci@example.com"
+          git add docs
+          git commit -m "Auto-deploy to docs from release"
+          git push
