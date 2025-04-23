@@ -24,7 +24,7 @@ jobs:
         run: npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
 
       - name: build
-        run: npm run build --output-path=docs
+        run: ng build --configuration production
 
       - name: docker login
         env:
@@ -37,9 +37,7 @@ jobs:
 
       - name: Copy built files to docs
         run: |
-          rm -rf docs
-          mkdir docs
-          cp -r dist/mycv/browser/* docs/
+          cp -r docs/browser/* docs/
 
           git add docs/index.html
           git commit -m "Move index.html to the root of docs"
