@@ -41,6 +41,11 @@ jobs:
           mkdir docs
           cp -r dist/mycv/browser/* docs/
 
+          git add docs/index.html
+          git commit -m "Move index.html to the root of docs"
+          git push origin deploy-release
+
+
       - name: build custom docker image
         run: docker commit --change "ENV MODEL_NAME mycv-base" mycv-base ${{ secrets.DOCKER_USER }}/mycv:${{ github.sha }}
 
