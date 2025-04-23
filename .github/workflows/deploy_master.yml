@@ -33,14 +33,14 @@ jobs:
         run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
       - name: download and run docker base image
-        run: docker run -d --name mycv -p 8080:80 mycv
+        run: docker run -d --name mycv-base -p 8080:80 httpd
 
       - name: copy model to the Docker image
-        run: docker cp dist/mycv/browser/. mycv:/usr/local/apache2/htdocs
+        run: docker cp dist/mycv/browser/. mycv-base:/usr/local/apache2/htdocs
 
       - name: build custom docker image
-        run: docker commit --change "ENV MODEL_NAME http_base" mycv ${{ secrets.DOCKER_USER }}/mycv:${{ github.sha }}
+        run: docker commit --change "ENV MODEL_NAME mycv-base" mycv-base ${{ secrets.DOCKER_USER }}/mycv:${{ github.sha }}
 
       - name: docker push
         run: docker push ${{ secrets.DOCKER_USER }}/mycv:${{ github.sha }}
-        
+
