@@ -35,8 +35,11 @@ jobs:
       - name: download and run docker base image
         run: docker run -d --name mycv-base -p 8080:80 httpd
 
-      - name: copy model to the Docker image
-        run: docker cp dist/mycv/browser/. mycv-base:/usr/local/apache2/htdocs
+      - name: Copy built files to docs
+        run: |
+          rm -rf docs
+          mkdir docs
+          cp -r dist/mycv/browser/* docs/
 
       - name: build custom docker image
         run: docker commit --change "ENV MODEL_NAME mycv-base" mycv-base ${{ secrets.DOCKER_USER }}/mycv:${{ github.sha }}
